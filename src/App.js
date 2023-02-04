@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import YodlrRoutes from "./Routes";
+import NavBar from "./Navbar";
+import API from "./API";
+import "./App.css";
 
 function App() {
+  const [usersData, setUsersData] = useState("");
+
+  useEffect(() => {
+    async function getUsers() {
+      const res = await API.getUsers();
+      setUsersData(res);
+    }
+    getUsers();
+  }, []);
+  console.log(usersData);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar />
+        <YodlrRoutes usersData={usersData} />
+      </div>
+    </BrowserRouter>
   );
 }
 
